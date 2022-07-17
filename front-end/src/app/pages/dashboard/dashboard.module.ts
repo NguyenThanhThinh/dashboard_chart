@@ -7,6 +7,7 @@ import { DashboardComponent } from './dashboard.component';
 import { DENgZorroAntdModule } from 'src/app/ng-zorro-antd.module';
 import { GoogleChartsModule } from 'angular-google-charts';
 import { CurrencyMaskConfig, CurrencyMaskInputMode, NgxCurrencyModule } from 'ngx-currency';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 export const customCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "right",
   allowNegative: true,
@@ -26,6 +27,7 @@ export const customCurrencyMaskConfig: CurrencyMaskConfig = {
     ReactiveFormsModule,
     CommonModule,
     GoogleChartsModule,
+    NzDatePickerModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig)
   ],
   declarations: [DashboardComponent],

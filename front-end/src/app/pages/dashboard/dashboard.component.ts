@@ -4,14 +4,21 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { finalize } from 'rxjs/operators';
 import { Department } from 'src/models/department.model';
 import { Patient } from 'src/models/patient.model';
-import { HomeService } from 'src/services/home.service';
+import { StatisticalService } from 'src/services/statistical.service';
 import { ChartType } from 'angular-google-charts';
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+
+  filter = {
+    toDate: this.subMonth(2),
+    endDate: new Date()
+  }
   areaChart = ChartType.AreaChart;
   barChart = ChartType.BarChart;
   columnChart = ChartType.ColumnChart;
@@ -29,78 +36,51 @@ export class DashboardComponent implements OnInit {
   donutOptions = {
     pieHole: 0.5
   }
-  filter = {
-    patientId: "",
-    roomId: 0,
-  }
-  listArray = [
-    {
-      "Id": 1,
-      "Name": "English",
-      "SpeakersInMillions": 1132
-    },
-    {
-      "Id": 2,
-      "Name": "Mandarin",
-      "SpeakersInMillions": 1117
-    },
-    {
-      "Id": 3,
-      "Name": "Hindi",
-      "SpeakersInMillions": 665
-    },
-    {
-      "Id": 4,
-      "Name": "Spanish",
-      "SpeakersInMillions": 534
-    },
-    {
-      "Id": 5,
-      "Name": "French",
-      "SpeakersInMillions": 280
-    },
-    {
-      "Id": 6,
-      "Name": "Arabic",
-      "SpeakersInMillions": 274
-    },
-    {
-      "Id": 7,
-      "Name": "Bengali",
-      "SpeakersInMillions": 265
-    },
-    {
-      "Id": 8,
-      "Name": "Russian",
-      "SpeakersInMillions": 258
-    },
-    {
-      "Id": 9,
-      "Name": "Portuguese",
-      "SpeakersInMillions": 234
-    },
-    {
-      "Id": 10,
-      "Name": "Indonesian",
-      "SpeakersInMillions": 198
-    }
-  ];
+
+  
   constructor(
-    private homeService: HomeService,
+    private statisticalService: StatisticalService,
     private spinner: NgxSpinnerService,
     private messageService: NzMessageService
   ) { }
 
   ngOnInit() {
-    for (let row in this.listArray) {
-      this.data.push([
-        this.listArray[row].Name.toString(),
-        this.listArray[row].SpeakersInMillions,
-      ]);
-    }
-
+    
+this.getData();
 
   }
-
+  getData() {
+    
+    
+    this.spinner.show();
+    this.statisticalService.get({
+      
+      toDate: moment(new Date(this.filter.toDate)).format("YYYY-MM-DD"),
+      endDate: moment(new Date(this.filter.endDate)).format("YYYY-MM-DD"),
+      
+    })
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((resp: any) => {
+        let listArray = resp;
+        this.data=[];
+        for (let row in listArray) {
+          this.data.push([
+            listArray[row].khoa.toString(),
+            listArray[row].tong,
+          ]);
+        }
+      }, error => {
+        this.messageService.error(error.error.message);
+      })
+  }
+ subMonth(monthsToAdd:number) {
+    var d = new Date();
+    d.setDate(d.getMonth()-monthsToAdd);
+    return d;
+}
 
 }

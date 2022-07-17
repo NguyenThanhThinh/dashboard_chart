@@ -3,3 +3,8 @@ export interface Department {
   name: string;
 }
 
+export interface DepartmentStatistical {
+  khoa: string;
+  tong: number;
+}
+
