@@ -26,12 +26,13 @@ export class DashboardComponent implements OnInit {
   pieChart = ChartType.PieChart;
 
   data: any[] = [];
+  dataPatientExport: any[] = [];
 
-  columnNames = ['Language', 'Speakers (millions)'];
+  columnNames = ['Language', 'Số lượng'];
 
-  width = 600;
+  width = 580;
 
-  height = 400;
+  height = 500;
 
   donutOptions = {
     pieHole: 0.5
@@ -50,8 +51,7 @@ this.getData();
 
   }
   getData() {
-    
-    
+     
     this.spinner.show();
     this.statisticalService.get({
       
@@ -70,6 +70,33 @@ this.getData();
         for (let row in listArray) {
           this.data.push([
             listArray[row].khoa.toString(),
+            listArray[row].tong,
+          ]);
+        }
+      }, error => {
+        this.messageService.error(error.error.message);
+      })
+    this.getPatientDepartmentStatistical();
+  }
+  getPatientDepartmentStatistical(){
+    this.spinner.show();
+    this.statisticalService.getGetPatientDepartmentStatisticals({
+      
+      toDate: moment(new Date(this.filter.toDate)).format("YYYY-MM-DD"),
+      endDate: moment(new Date(this.filter.endDate)).format("YYYY-MM-DD"),
+      
+    })
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((resp: any) => {
+        let listArray = resp;
+        this.dataPatientExport=[];
+        for (let row in listArray) {
+          this.dataPatientExport.push([
+            listArray[row].khoavaO_TEN.toString(),
             listArray[row].tong,
           ]);
         }

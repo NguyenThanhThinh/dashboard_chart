@@ -15,4 +15,8 @@ export class BaseService {
   getDashboards() {
     return this.http.get(this.routerPrefix + "/get-dashboard");
   }
+
+  getGetPatientDepartmentStatisticals(filter: {}) {
+    return this.http.get(this.routerPrefix + "/get-patient-departments-statistical",{ params: filter });
+  }
 }

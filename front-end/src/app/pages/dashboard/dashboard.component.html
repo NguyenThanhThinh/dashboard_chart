@@ -30,7 +30,7 @@
                 <nz-form-control>
                     <button (click)="getData()" nz-button nzSize="small" nzType="primary">
                         <i nz-icon nzType="search" nzTheme="outline"></i>
-                        Tìm kiếm
+                        Thực hiện
                     </button>
                 </nz-form-control>
             </nz-form-item>
@@ -40,17 +40,18 @@
 <br>
 <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
   <div nz-col class="gutter-row" [nzSpan]="12">
-    <div class="inner-box">
-      <!-- <google-chart title="Bar Chart" [type]="barChart" [data]="data" [columns]="columnNames" [width]="width"
-        [height]="height">
-      </google-chart> -->
-    </div>
-  </div>
-  <div nz-col class="gutter-row" [nzSpan]="12">
-    <google-chart title="Donut Chart" [type]="pieChart" [data]="data" [columns]="columnNames" [width]="width"
+    <google-chart title="Tổng số bệnh nhân" [type]="pieChart" [data]="data" [columns]="columnNames" [width]="width"
       [height]="height" [options]="donutOptions">
     </google-chart>
   </div>
+  <div nz-col class="gutter-row" [nzSpan]="12">
+    <div class="inner-box">
+      <google-chart title="Số lượng bệnh nhân xuất viện" [type]="barChart" [data]="dataPatientExport" [columns]="columnNames" [width]="width"
+        [height]="height">
+      </google-chart>
+    </div>
+  </div>
+  
 </div>
 
 <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
