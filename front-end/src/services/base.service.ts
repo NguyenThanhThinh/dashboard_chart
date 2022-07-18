@@ -19,4 +19,10 @@ export class BaseService {
   getGetPatientDepartmentStatisticals(filter: {}) {
     return this.http.get(this.routerPrefix + "/get-patient-departments-statistical",{ params: filter });
   }
+  getGetPatientAgeStatisticals(filter: {}) {
+    return this.http.get(this.routerPrefix + "/get-patient-age-statistical",{ params: filter });
+  }
+  getGetPatientSexStatisticals(filter: {}) {
+    return this.http.get(this.routerPrefix + "/get-patient-sex-statistical",{ params: filter });
+  }
 }

@@ -45,12 +45,11 @@
     </google-chart>
   </div>
   <div nz-col class="gutter-row" [nzSpan]="12">
-    <div class="inner-box">
-      <google-chart title="Số lượng bệnh nhân xuất viện" [type]="barChart" [data]="dataPatientExport" [columns]="columnNames" [width]="width"
-        [height]="height">
-      </google-chart>
-    </div>
+    <google-chart title="Bệnh nhân theo giới tính" [type]="pieChart" [data]="dataSex" [columns]="columnNames" [width]="width"
+      [height]="height">
+    </google-chart>
   </div>
+  
   
 </div>
 
@@ -71,14 +70,16 @@
 
 <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
   <div nz-col class="gutter-row" [nzSpan]="12">
-    <!-- <google-chart title="Line Chart" [type]="lineChart" [data]="data" [columns]="columnNames" [width]="width"
+    <google-chart title="Bệnh nhân theo độ tuổi" [type]="columnChart" [data]="dataAge" [columns]="columnAge" [width]="width"
       [height]="height">
-    </google-chart> -->
+    </google-chart>
   </div>
   <div nz-col class="gutter-row" [nzSpan]="12">
-    <!-- <google-chart title="Area Chart" [type]="areaChart" [data]="data" [columns]="columnNames" [width]="width"
-      [height]="height">
-    </google-chart> -->
+    <div class="inner-box">
+      <google-chart title="Số lượng bệnh nhân xuất viện" [type]="barChart" [data]="dataPatientExport" [columns]="columnNames" [width]="width"
+        [height]="height">
+      </google-chart>
+    </div>
   </div>
 </div>
 <ngx-spinner></ngx-spinner>

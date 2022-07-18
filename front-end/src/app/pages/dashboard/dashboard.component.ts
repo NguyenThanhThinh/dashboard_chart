@@ -27,8 +27,12 @@ export class DashboardComponent implements OnInit {
 
   data: any[] = [];
   dataPatientExport: any[] = [];
+  dataAge: any[] = [];
+  dataSex: any[] = [];
 
   columnNames = ['Language', 'Số lượng'];
+
+  columnAge = ['Language', 'Số bệnh nhân'];
 
   width = 580;
 
@@ -77,6 +81,8 @@ this.getData();
         this.messageService.error(error.error.message);
       })
     this.getPatientDepartmentStatistical();
+    this.getPatientAge();
+    this.getPatientSex();
   }
   getPatientDepartmentStatistical(){
     this.spinner.show();
@@ -98,6 +104,59 @@ this.getData();
           this.dataPatientExport.push([
             listArray[row].khoavaO_TEN.toString(),
             listArray[row].tong,
+          ]);
+        }
+      }, error => {
+        this.messageService.error(error.error.message);
+      })
+  }
+  getPatientAge(){
+    this.spinner.show();
+    this.statisticalService.getGetPatientAgeStatisticals({
+      
+      toDate: moment(new Date(this.filter.toDate)).format("YYYY-MM-DD"),
+      endDate: moment(new Date(this.filter.endDate)).format("YYYY-MM-DD"),
+      
+    })
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((resp: any) => {
+        let listArray = resp;
+        this.dataAge=[];
+        for (let row in listArray) {
+          this.dataAge.push([
+            listArray[row].group.toString(),
+            listArray[row].key,
+          ]);
+        }
+      }, error => {
+        this.messageService.error(error.error.message);
+      })
+  }
+
+  getPatientSex(){
+    this.spinner.show();
+    this.statisticalService.getGetPatientSexStatisticals({
+      
+      toDate: moment(new Date(this.filter.toDate)).format("YYYY-MM-DD"),
+      endDate: moment(new Date(this.filter.endDate)).format("YYYY-MM-DD"),
+      
+    })
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((resp: any) => {
+        let listArray = resp;
+        this.dataSex=[];
+        for (let row in listArray) {
+          this.dataSex.push([
+            listArray[row].sex.toString(),
+            listArray[row].count,
           ]);
         }
       }, error => {
