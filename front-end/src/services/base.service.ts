@@ -25,4 +25,16 @@ export class BaseService {
   getGetPatientSexStatisticals(filter: {}) {
     return this.http.get(this.routerPrefix + "/get-patient-sex-statistical",{ params: filter });
   }
+  getGetPatientInputStatisticals(filter: {}) {
+    return this.http.get(this.routerPrefix + "/get-patient-input-departments-statistical",{ params: filter });
+  }
+  getGetPatientModelStatisticals(filter: {}) {
+    return this.http.get(this.routerPrefix + "/get-patient-model-statistical",{ params: filter });
+  }
+  getPatientStatisticDashboard(filter: {}) {
+    return this.http.get(this.routerPrefix + "/get-patient-dashboard-statistical",{ params: filter });
+  }
+  getGroupServiceDashboard(filter: {}) {
+    return this.http.get(this.routerPrefix + "/get-group-service-dashboard-statistical",{ params: filter });
+  }
 }

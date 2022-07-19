@@ -5,10 +5,11 @@
   <nz-breadcrumb-item>
   </nz-breadcrumb-item>
 </nz-breadcrumb>
+
 <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
   <div nz-col nzSpan="24">
-    <div nz-row>
-        <div nz-col nzSpan="9">
+    <div nz-row class="gutter-row">
+        <div nz-col nzSpan="8">
             <nz-form-item>
                 <nz-form-label>Từ ngày</nz-form-label>               
                   <nz-form-control>
@@ -16,7 +17,7 @@
                   </nz-form-control>             
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="9">
+        <div nz-col nzSpan="8">
             <nz-form-item>
                 <nz-form-label>Đến ngày</nz-form-label>
                 <nz-form-control>
@@ -25,7 +26,7 @@
                 </nz-form-control>  
             </nz-form-item>
         </div>
-        <div nz-col nzSpan="6">
+        <div nz-col nzSpan="8">
             <nz-form-item>
                 <nz-form-control>
                     <button (click)="getData()" nz-button nzSize="small" nzType="primary">
@@ -37,10 +38,36 @@
         </div>
     </div>
 </div>
+</div>
 <br>
 <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+  <div nz-col class="gutter-row" [nzSpan]="6">
+    <nz-card nzTitle="Tổng" style="background-color: #5cb85c;">
+      <p>{{totalCount}}</p>
+    </nz-card>
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="6">
+    <nz-card nzTitle="Khoa Ngoại Phụ" style="background-color: #f0ad4e;">
+      <p>{{totalDepartment1}}</p>
+    </nz-card>
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="6">
+    <nz-card nzTitle="Khoa Nội Nhi" style="background-color: #d9534f;">
+      <p>{{totalDepartment2}}</p>
+    </nz-card>
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="6">
+    <nz-card nzTitle="Khoa Nội Tổng Hợp" style="background-color: #5bc0de;">
+      <p>{{totalDepartment3}}</p>
+    </nz-card>
+  </div>
+</div>
+
+
+
+<div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
   <div nz-col class="gutter-row" [nzSpan]="12">
-    <google-chart title="Tổng số bệnh nhân" [type]="pieChart" [data]="data" [columns]="columnNames" [width]="width"
+    <google-chart title="Tổng số bệnh nhân đến khám bệnh" [type]="pieChart" [data]="data" [columns]="columnNames" [width]="width"
       [height]="height" [options]="donutOptions">
     </google-chart>
   </div>
@@ -56,30 +83,75 @@
 <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
   <div nz-col class="gutter-row" [nzSpan]="12">
     <div class="inner-box">
-      <!-- <google-chart title="Bar Chart" [type]="barChart" [data]="data" [columns]="columnNames" [width]="width"
+      <google-chart title="Bệnh nhân nhập viện" [type]="barChart" [data]="dataPatientInput" [columns]="columnNames" [width]="width"
         [height]="height">
-      </google-chart> -->
+      </google-chart>
     </div>
   </div>
   <div nz-col class="gutter-row" [nzSpan]="12">
-    <!-- <google-chart title="Pie Chart" [type]="pieChart" [data]="data" [columns]="columnNames" [width]="width"
-      [height]="height">
-    </google-chart> -->
+    <div class="inner-box">
+      <google-chart title="Số lượng bệnh nhân xuất viện" [options]="options" [type]="barChart" [data]="dataPatientExport" [columns]="columnNames" [width]="width"
+        [height]="height">
+      </google-chart>
+    </div>
   </div>
 </div>
 
 <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+
   <div nz-col class="gutter-row" [nzSpan]="12">
     <google-chart title="Bệnh nhân theo độ tuổi" [type]="columnChart" [data]="dataAge" [columns]="columnAge" [width]="width"
       [height]="height">
     </google-chart>
   </div>
   <div nz-col class="gutter-row" [nzSpan]="12">
-    <div class="inner-box">
-      <google-chart title="Số lượng bệnh nhân xuất viện" [type]="barChart" [data]="dataPatientExport" [columns]="columnNames" [width]="width"
-        [height]="height">
-      </google-chart>
-    </div>
+    <!-- <google-chart title="Bệnh nhân theo độ tuổi" [type]="columnChart" [data]="dataAge" [columns]="columnAge" [width]="width"
+      [height]="height">
+    </google-chart> -->
   </div>
 </div>
+<div  nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
+ 
+    <div nz-col [nzSpan]="12">
+     <h4 style="margin-left:3px ;">Mô hình bệnh nhân</h4>
+     <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên bệnh</th>
+          <th class="no-wrap" style="width:120px">Tổng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of modelPatient;let No =index;">
+          <td class="no-wrap" style="width: 5%;">{{ No+1 }}</td>
+          <td class="no-wrap">{{ data.name }}</td>
+          <td class="no-wrap">{{ data.count }}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div nz-col [nzSpan]="12">
+      <h4 style="margin-left:3px ;">Nhóm dịch vụ</h4>
+      <table class="table table-striped">
+       <thead>
+         <tr>
+           <th>STT</th>
+           <th>Tên</th>
+           <th class="no-wrap" style="width:120px">Tổng tiền</th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr *ngFor="let data of groupServices;let No =index;">
+           <td class="no-wrap" style="width: 5%;">{{ No+1 }}</td>
+           <td class="no-wrap">{{ data.name }}</td>
+           <td class="no-wrap">{{ data.value | number}}</td>
+         </tr>
+       </tbody>
+     </table>
+     </div>
+  
+</div>
+
+
 <ngx-spinner></ngx-spinner>

@@ -7,6 +7,7 @@ import { Patient } from 'src/models/patient.model';
 import { StatisticalService } from 'src/services/statistical.service';
 import { ChartType } from 'angular-google-charts';
 import * as moment from 'moment';
+import { GroupService, ModelPatient } from 'src/models/statistic.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +17,7 @@ import * as moment from 'moment';
 export class DashboardComponent implements OnInit {
 
   filter = {
-    toDate: this.subMonth(2),
+    toDate: this.subMonth(0),
     endDate: new Date()
   }
   areaChart = ChartType.AreaChart;
@@ -27,8 +28,15 @@ export class DashboardComponent implements OnInit {
 
   data: any[] = [];
   dataPatientExport: any[] = [];
+  dataPatientInput: any[] = [];
   dataAge: any[] = [];
   dataSex: any[] = [];
+  modelPatient : ModelPatient[]=[];
+  groupServices : GroupService[]=[];
+  totalCount: number = 0;
+  totalDepartment1: number = 0;
+  totalDepartment2: number = 0;
+  totalDepartment3: number = 0;
 
   columnNames = ['Language', 'Số lượng'];
 
@@ -41,7 +49,10 @@ export class DashboardComponent implements OnInit {
   donutOptions = {
     pieHole: 0.5
   }
-
+  options = {
+  
+    colors: ['#5cb85c', '#f0ad4e', '#d9534f', '#5bc0de']
+  };
   
   constructor(
     private statisticalService: StatisticalService,
@@ -57,6 +68,7 @@ this.getData();
   getData() {
      
     this.spinner.show();
+    this.getPatientStatisticDashboard();
     this.statisticalService.get({
       
       toDate: moment(new Date(this.filter.toDate)).format("YYYY-MM-DD"),
@@ -83,6 +95,10 @@ this.getData();
     this.getPatientDepartmentStatistical();
     this.getPatientAge();
     this.getPatientSex();
+    this.getPatientInput();
+    this.getModelPatient();
+    this.getGroupService();
+    
   }
   getPatientDepartmentStatistical(){
     this.spinner.show();
@@ -159,6 +175,102 @@ this.getData();
             listArray[row].count,
           ]);
         }
+      }, error => {
+        this.messageService.error(error.error.message);
+      })
+  }
+
+  getPatientInput(){
+    this.spinner.show();
+    this.statisticalService.getGetPatientInputStatisticals({
+      
+      toDate: moment(new Date(this.filter.toDate)).format("YYYY-MM-DD"),
+      endDate: moment(new Date(this.filter.endDate)).format("YYYY-MM-DD"),
+      
+    })
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((resp: any) => {
+        let listArray = resp;
+        this.dataPatientInput=[];
+        for (let row in listArray) {
+          this.dataPatientInput.push([
+            listArray[row].name.toString(),
+            listArray[row].count,
+          ]);
+        }
+      }, error => {
+        this.messageService.error(error.error.message);
+      })
+  }
+
+  getModelPatient(){
+    this.spinner.show();
+    this.statisticalService.getGetPatientModelStatisticals({
+      
+      toDate: moment(new Date(this.filter.toDate)).format("YYYY-MM-DD"),
+      endDate: moment(new Date(this.filter.endDate)).format("YYYY-MM-DD"),
+      
+    })
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((resp: any) => {
+       
+        this.modelPatient=[];
+        this.modelPatient= resp;
+        
+      }, error => {
+        this.messageService.error(error.error.message);
+      })
+  }
+  getPatientStatisticDashboard(){
+    this.spinner.show();
+    this.statisticalService.getPatientStatisticDashboard({
+      
+      toDate: moment(new Date(this.filter.toDate)).format("YYYY-MM-DD"),
+      endDate: moment(new Date(this.filter.endDate)).format("YYYY-MM-DD"),
+      
+    })
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((resp: any) => {
+       
+        this.totalCount = resp.totalCount;
+        this.totalDepartment1 = resp.totalDepartment1;
+        this.totalDepartment2 = resp.totalDepartment2;
+        this.totalDepartment3 = resp.totalDepartment3;
+        
+      }, error => {
+        this.messageService.error(error.error.message);
+      })
+  }
+  getGroupService(){
+    this.spinner.show();
+    this.statisticalService.getGroupServiceDashboard({
+      
+      toDate: moment(new Date(this.filter.toDate)).format("YYYY-MM-DD"),
+      endDate: moment(new Date(this.filter.endDate)).format("YYYY-MM-DD"),
+      
+    })
+      .pipe(
+        finalize(() => {
+          this.spinner.hide();
+        })
+      )
+      .subscribe((resp: any) => {
+       
+        this.groupServices=[];
+        this.groupServices= resp;
+        
       }, error => {
         this.messageService.error(error.error.message);
       })
