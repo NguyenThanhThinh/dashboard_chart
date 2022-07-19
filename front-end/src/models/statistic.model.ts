@@ -8,6 +8,7 @@ export interface Statistic {
 export interface ModelPatient {
  count: number;
  name:string;
+ code:string;
 }
 
 export interface GroupService {

@@ -113,11 +113,12 @@
 <div  nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24, lg: 32 }">
  
     <div nz-col [nzSpan]="12">
-     <h4 style="margin-left:3px ;">Mô hình bệnh nhân</h4>
+     <h4 style="margin-left:3px ;">Mô hình bệnh tật</h4>
      <table class="table table-striped">
       <thead>
         <tr>
           <th>STT</th>
+          <th>Mã</th>
           <th>Tên bệnh</th>
           <th class="no-wrap" style="width:120px">Tổng</th>
         </tr>
@@ -125,6 +126,7 @@
       <tbody>
         <tr *ngFor="let data of modelPatient;let No =index;">
           <td class="no-wrap" style="width: 5%;">{{ No+1 }}</td>
+          <td class="no-wrap">{{ data.code }}</td>
           <td class="no-wrap">{{ data.name }}</td>
           <td class="no-wrap">{{ data.count }}</td>
         </tr>
