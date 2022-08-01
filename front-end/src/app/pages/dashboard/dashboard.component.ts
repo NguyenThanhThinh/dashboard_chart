@@ -17,7 +17,7 @@ import { GroupService, ModelPatient } from 'src/models/statistic.model';
 export class DashboardComponent implements OnInit {
 
   filter = {
-    toDate: this.subMonth(0),
+    toDate: new Date(),
     endDate: new Date()
   }
   areaChart = ChartType.AreaChart;
